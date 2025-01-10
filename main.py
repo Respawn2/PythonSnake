@@ -61,7 +61,8 @@ class Snake(GameObject):
     def update_direction(self):
         # Обновление направления движения змейки
         if (self.next_direction and self.next_direction !=
-                tuple(map(lambda x, y: -x, self.direction, self.next_direction))):
+                tuple(map(lambda x, y: -x, self.direction,
+                          self.next_direction))):
             self.direction = self.next_direction
             self.next_direction = None
 
