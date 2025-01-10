@@ -16,7 +16,8 @@ RIGHT = (1, 0)
 class GameObject:
     # Базовый класс для игровых объектов
 
-    def __init__(self, position: Tuple[int, int], body_color: Tuple[int, int, int]):
+    def __init__(self, position: Tuple[int, int],
+                 body_color: Tuple[int, int, int]):
         self.position = position
         self.body_color = body_color
 
@@ -39,7 +40,8 @@ class Apple(GameObject):
 
     def draw(self, surface: pygame.Surface):
         # Отрисовывает яблоко на игровом поле
-        r = pygame.Rect((self.position[0], self.position[1]), (GRID_SIZE, GRID_SIZE))
+        r = pygame.Rect((self.position[0], self.position[1]),
+                        (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(surface, self.body_color, r)
 
 
@@ -48,7 +50,8 @@ class Snake(GameObject):
 
     def __init__(self):
         # Инициализация змейки
-        super().__init__(((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2)), (0, 255, 0))  # Зеленый цвет
+        super().__init__(((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2)),
+                         (0, 255, 0))
         self.length = 1
         self.positions = [self.position]
         self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
@@ -57,7 +60,8 @@ class Snake(GameObject):
 
     def update_direction(self):
         # Обновление направления движения змейки
-        if self.next_direction and self.next_direction != tuple(map(lambda x, y: -x, self.direction, self.next_direction)):
+        if (self.next_direction and self.next_direction !=
+                tuple(map(lambda x, y: -x, self.direction, self.next_direction))):
             self.direction = self.next_direction
             self.next_direction = None
 
@@ -119,7 +123,8 @@ def main():
     # Основной Игрового цикла
     pygame.init()
     clock = pygame.time.Clock()
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
+    screen = (pygame.display.set_mode
+              ((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32))
     surface = pygame.Surface(screen.get_size())
     surface = surface.convert()
     surface.fill(BOARD_BACKGROUND_COLOR)
