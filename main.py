@@ -17,25 +17,21 @@ class GameObject:
     # Базовый класс для игровых объектов
 
     def __init__(self, position: Tuple[int, int], body_color: Tuple[int, int, int]):
-        # Инициализирует игровой объект
         self.position = position
         self.body_color = body_color
 
     def draw(self, surface: pygame.Surface):
-        # Отрисовывает игровой объект
         pass
 
 
 class Apple(GameObject):
-    # Класс, представляющий яблоко
+    # Класс яблоко
 
     def __init__(self):
-        # Инициализирует яблоко
         super().__init__((0, 0), (255, 0, 0))  # Красный цвет
         self.randomize_position()
 
     def randomize_position(self):
-        # Устанавливает случайную позицию яблока
         self.position = (
             random.randint(0, (SCREEN_WIDTH // GRID_SIZE) - 1) * GRID_SIZE,
             random.randint(0, (SCREEN_HEIGHT // GRID_SIZE) - 1) * GRID_SIZE,
@@ -48,25 +44,25 @@ class Apple(GameObject):
 
 
 class Snake(GameObject):
-    # Класс, представляющий змейку
+    # Класс, представляющий змейки
 
     def __init__(self):
-        # Инициализирует змейку
+        # Инициализация змейки
         super().__init__(((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2)), (0, 255, 0))  # Зеленый цвет
         self.length = 1
         self.positions = [self.position]
         self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
         self.next_direction = None
-        self.last = None  # Для стирания последнего сегмента
+        self.last = None
 
     def update_direction(self):
-        # Обновляет направление движения змейки
+        # Обновление направления движения змейки
         if self.next_direction and self.next_direction != tuple(map(lambda x, y: -x, self.direction, self.next_direction)):
             self.direction = self.next_direction
             self.next_direction = None
 
     def move(self):
-        # Перемещает змейку на одну клетку
+        # Перемещение змейки на одну клетку
         cur = self.get_head_position()
         x, y = self.direction
         new = (
@@ -82,17 +78,17 @@ class Snake(GameObject):
                 self.positions.pop()
 
     def draw(self, surface: pygame.Surface):
-        # Отрисовывает змейку на игровом поле
+        # Отрисовка змейки на игровом поле
         for p in self.positions:
             r = pygame.Rect((p[0], p[1]), (GRID_SIZE, GRID_SIZE))
             pygame.draw.rect(surface, self.body_color, r)
-            pygame.draw.rect(surface, (255, 255, 255), r, 1)  # Белая рамка
+            pygame.draw.rect(surface, (255, 255, 255), r, 1)
         if self.last:  # Стирание последнего сегмента
             r = pygame.Rect(self.last, (GRID_SIZE, GRID_SIZE))
             pygame.draw.rect(surface, BOARD_BACKGROUND_COLOR, r)
 
     def get_head_position(self) -> Tuple[int, int]:
-        # Возвращает позицию головы змейки
+        # Возврат позиции головы змейки
         return self.positions[0]
 
     def reset(self):
@@ -120,7 +116,7 @@ def handle_keys(snake: Snake):
 
 
 def main():
-    # Основной игровой цикл
+    # Основной Игрового цикла
     pygame.init()
     clock = pygame.time.Clock()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
