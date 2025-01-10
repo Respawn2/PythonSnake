@@ -14,44 +14,44 @@ RIGHT = (1, 0)
 
 
 class GameObject:
-    """Базовый класс для игровых объектов."""
+    # Базовый класс для игровых объектов
 
     def __init__(self, position: Tuple[int, int], body_color: Tuple[int, int, int]):
-        """Инициализирует игровой объект."""
+        # Инициализирует игровой объект
         self.position = position
         self.body_color = body_color
 
     def draw(self, surface: pygame.Surface):
-        """Отрисовывает игровой объект."""
+        # Отрисовывает игровой объект
         pass
 
 
 class Apple(GameObject):
-    """Класс, представляющий яблоко."""
+    # Класс, представляющий яблоко
 
     def __init__(self):
-        """Инициализирует яблоко."""
+        # Инициализирует яблоко
         super().__init__((0, 0), (255, 0, 0))  # Красный цвет
         self.randomize_position()
 
     def randomize_position(self):
-        """Устанавливает случайную позицию яблока."""
+        # Устанавливает случайную позицию яблока
         self.position = (
             random.randint(0, (SCREEN_WIDTH // GRID_SIZE) - 1) * GRID_SIZE,
             random.randint(0, (SCREEN_HEIGHT // GRID_SIZE) - 1) * GRID_SIZE,
         )
 
     def draw(self, surface: pygame.Surface):
-        """Отрисовывает яблоко на игровом поле."""
+        # Отрисовывает яблоко на игровом поле
         r = pygame.Rect((self.position[0], self.position[1]), (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(surface, self.body_color, r)
 
 
 class Snake(GameObject):
-    """Класс, представляющий змейку."""
+    # Класс, представляющий змейку
 
     def __init__(self):
-        """Инициализирует змейку."""
+        # Инициализирует змейку
         super().__init__(((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2)), (0, 255, 0))  # Зеленый цвет
         self.length = 1
         self.positions = [self.position]
@@ -60,13 +60,13 @@ class Snake(GameObject):
         self.last = None  # Для стирания последнего сегмента
 
     def update_direction(self):
-        """Обновляет направление движения змейки."""
+        # Обновляет направление движения змейки
         if self.next_direction and self.next_direction != tuple(map(lambda x, y: -x, self.direction, self.next_direction)):
             self.direction = self.next_direction
             self.next_direction = None
 
     def move(self):
-        """Перемещает змейку на одну клетку."""
+        # Перемещает змейку на одну клетку
         cur = self.get_head_position()
         x, y = self.direction
         new = (
@@ -82,7 +82,7 @@ class Snake(GameObject):
                 self.positions.pop()
 
     def draw(self, surface: pygame.Surface):
-        """Отрисовывает змейку на игровом поле."""
+        # Отрисовывает змейку на игровом поле
         for p in self.positions:
             r = pygame.Rect((p[0], p[1]), (GRID_SIZE, GRID_SIZE))
             pygame.draw.rect(surface, self.body_color, r)
@@ -92,18 +92,18 @@ class Snake(GameObject):
             pygame.draw.rect(surface, BOARD_BACKGROUND_COLOR, r)
 
     def get_head_position(self) -> Tuple[int, int]:
-        """Возвращает позицию головы змейки."""
+        # Возвращает позицию головы змейки
         return self.positions[0]
 
     def reset(self):
-        """Сбрасывает змейку в начальное состояние."""
+        # Сбрасывает змейку в начальное состояние
         self.length = 1
         self.positions = [((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2))]
         self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
 
 
 def handle_keys(snake: Snake):
-    """Обрабатывает нажатия клавиш."""
+    # Обрабатывает нажатия клавиш
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -120,7 +120,7 @@ def handle_keys(snake: Snake):
 
 
 def main():
-    """Основной игровой цикл."""
+    # Основной игровой цикл
     pygame.init()
     clock = pygame.time.Clock()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
@@ -139,7 +139,7 @@ def main():
             snake.length += 1
             apple.randomize_position()
 
-        surface.fill(BOARD_BACKGROUND_COLOR)  # Очистка экрана
+        surface.fill(BOARD_BACKGROUND_COLOR)
         snake.draw(surface)
         apple.draw(surface)
         screen.blit(surface, (0, 0))
